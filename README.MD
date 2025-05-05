@@ -2,7 +2,7 @@
 
 # [Paid Memberships Pro - VAT (Value Added Tax) Add On](https://www.paidmembershipspro.com/add-ons/vat-tax/) #
 
-![License](https://img.shields.io/badge/license-GPL--2.0%2B-red.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-GPL--3.0%2B-red.svg?style=flat-square)
 
 ### Welcome to the Paid Memberships Pro - VAT (Value Added Tax) Add On GitHub Repository
 Calculate VAT at checkout and allow customers with a VAT Number to avoid the tax. This plugin adds a new section on the Membership Checkout form titled "European Union Residents VAT". 
@@ -37,3 +37,4 @@ Here are some ways for **non-developers to contribute** to Paid Memberships Pro 
 
 1. Translate Paid Memberships Pro - VAT (Value Added Tax) Add On into your own [language](https://www.paidmembershipspro.com/paid-memberships-pro-in-your-language/).
 2. [Purchase a paid membership](https://paidmembershipspro.com/pricing) to help fund ongoing development and bug fixes.
+3. Leave an honest review for [Paid Memberships Pro - VAT (Value Added Tax) Add On](https://www.paidmembershipspro.com/submit-testimonial/).
