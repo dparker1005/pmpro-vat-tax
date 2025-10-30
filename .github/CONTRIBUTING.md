@@ -1,4 +1,4 @@
-# Contribute to Paid Memberships Pro - VAT Add On
+# Contribute to Paid Memberships Pro - VAT (Value Added Tax) Add On
 
 Paid Memberships Pro is the "community solution" for membership sites on WordPress, and so contributions of all kinds are appreciated.
 
