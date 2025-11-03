@@ -618,13 +618,13 @@ function pmprovat_pmpro_after_payment_settings() {
 		<tbody>
 			<tr class="pmpro_settings_divider">
 				<td colspan="2">
-					<?php _e('EU VAT Seller Country', 'pmpro-vat-tax' ); ?>
+					<?php esc_html_e('EU VAT Seller Country', 'pmpro-vat-tax' ); ?>
 				</td>
 			</tr>
 			
 			<tr>
 				<th scope="row" valign="top">
-					<label for="pmprovt_seller_country"><?php _e('Seller Country', 'pmpro-vat-tax' );?>:</label>
+					<label for="pmprovt_seller_country"><?php esc_html_e('Seller Country', 'pmpro-vat-tax' );?>:</label>
 				</th>
 				<td>
 					<select id = "pmprovt_seller_country" name = "pmprovt_seller_country">
@@ -633,7 +633,7 @@ function pmprovat_pmpro_after_payment_settings() {
 							{
 
 							?>
-							<option value="<?php echo $abbr?>" <?php if($abbr == $seller_country) { ?>selected="selected"<?php } ?>><?php echo $country?></option>
+							<option value="<?php echo esc_attr( $abbr )?>" <?php if($abbr == $seller_country) { ?>selected="selected"<?php } ?>><?php echo esc_html($country)?></option>
 							<?php
 							}
 						?>
