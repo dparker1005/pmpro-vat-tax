@@ -553,6 +553,9 @@ function pmprovat_plugin_row_meta($links, $file) {
 }
 add_filter('plugin_row_meta', 'pmprovat_plugin_row_meta', 10, 2);
 
+/**
+ * Legacy function for before PMPro v3.5.
+ */
 function pmprovat_pmpro_payment_option_fields($payment_option_values, $gateway)
 {
 
@@ -595,6 +598,53 @@ function pmprovat_pmpro_payment_option_fields($payment_option_values, $gateway)
 
 }
 add_action('pmpro_payment_option_fields', 'pmprovat_pmpro_payment_option_fields', 10, 2);
+
+/**
+ * Add "seller country" setting to PMPro Settings > Payment settings page.
+ *
+ * Runs for PMPro v3.5 and later.
+ */
+function pmprovat_pmpro_after_payment_settings() {
+	global $pmpro_european_union;
+
+	if ( isset( $_REQUEST['pmprovt_seller_country'] ) ) {
+		$seller_country = sanitize_text_field( wp_unslash( $_REQUEST['pmprovt_seller_country'] ) );
+		update_option( 'pmprovt_seller_country', $seller_country, 'no' );
+	} else {
+		$seller_country = get_option( 'pmprovt_seller_country' );
+	}
+	?>
+	<table class="form-table">
+		<tbody>
+			<tr class="pmpro_settings_divider">
+				<td colspan="2">
+					<?php esc_html_e('EU VAT Seller Country', 'pmpro-vat-tax' ); ?>
+				</td>
+			</tr>
+			
+			<tr>
+				<th scope="row" valign="top">
+					<label for="pmprovt_seller_country"><?php esc_html_e('Seller Country', 'pmpro-vat-tax' );?>:</label>
+				</th>
+				<td>
+					<select id = "pmprovt_seller_country" name = "pmprovt_seller_country">
+						<?php
+							foreach($pmpro_european_union as $abbr => $country)
+							{
+
+							?>
+							<option value="<?php echo esc_attr( $abbr )?>" <?php if($abbr == $seller_country) { ?>selected="selected"<?php } ?>><?php echo esc_html($country)?></option>
+							<?php
+							}
+						?>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<?php
+}
+add_action( 'pmpro_after_payment_settings', 'pmprovat_pmpro_after_payment_settings' );
 
 /**
  * Function to add VAT Number to order notes
