@@ -652,23 +652,28 @@ add_action( 'pmpro_after_payment_settings', 'pmprovat_pmpro_after_payment_settin
 function pmprovat_pmpro_added_order($order)
 {
 	global $wpdb, $pmpro_european_union;
-	
-	if( function_exists( 'pmpro_doing_webhook' ) && pmpro_doing_webhook() ){
 
+	// Assume this is the first order unless we find an earlier order in this subscription.
+	$is_first_subscription_order = true;
+	$first_order = false;
+
+	// Get the first order in this subscription chain.
+	if ( method_exists( $order, 'get_original_subscription_order' ) && ! empty( $order->subscription_transaction_id ) ) {
 		$first_order = $order->get_original_subscription_order( $order->subscription_transaction_id );
+	}
 
-		if( !empty( $first_order ) ){
+	if ( ! empty( $first_order ) && ! empty( $first_order->id ) && ! empty( $order->id ) ) {
+		$is_first_subscription_order = ( (int) $first_order->id === (int) $order->id );
+	}
 
-			$vat_number = pmprovat_get_tax_order_notes( 'EU_VAT_NUMBER', $first_order );
-			$eucountry = pmprovat_get_tax_order_notes( 'EU_VAT_COUNTRY', $first_order );
-			$vat_rate = floatval( pmprovat_get_tax_order_notes( 'EU_VAT_TAX_RATE', $first_order ) );
+	if ( ! $is_first_subscription_order ) {
+		$vat_number = pmprovat_get_tax_order_notes( 'EU_VAT_NUMBER', $first_order );
+		$eucountry = pmprovat_get_tax_order_notes( 'EU_VAT_COUNTRY', $first_order );
+		$vat_rate = floatval( pmprovat_get_tax_order_notes( 'EU_VAT_TAX_RATE', $first_order ) );
 
-			$order->subtotal = pmprovat_calculate_subtotal( $order->total, $vat_rate );
+		$order->subtotal = pmprovat_calculate_subtotal( $order->total, $vat_rate );
+		$order->tax = $order->total - $order->subtotal;
 
-			$order->tax = $order->total - $order->subtotal;
-
-		}
-	
 		$wpdb->update(
 			$wpdb->pmpro_membership_orders,
 			array( 'tax' => $order->tax, 'subtotal' => $order->subtotal ),
@@ -676,7 +681,6 @@ function pmprovat_pmpro_added_order($order)
 			array( '%s', '%s' ),
 			array( '%d' )
 		);
-
 	} else {
 
 		if(!empty($_REQUEST['vat_number']))
